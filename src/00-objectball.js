@@ -127,6 +127,9 @@ function awayTeam() {
 function players() {
     return Object.assign({}, homeTeam().players, awayTeam().players)
 }
+function playersObj(playerName) {
+  return players()[playerName]
+}
 
 function numPointsScored(playerName) {
     return players()[playerName].points
@@ -160,15 +163,64 @@ function teamNames() {
 function playerNumbers(team) {
 
     const game = gameObject();
-
-    for (const gameKey in game) {
-        if (team === game[gameKey].teamName)
-        return game[gameKey].players 
-    }
-                
-}
-playerNumbers("Charlotte Hornets")            
+    const result = [];
     
+    for (const gameKey in game) {
+      if (team === game[gameKey].teamName) {
+
+        const players = game[gameKey].players
+
+        for (const player in players) {
+
+          const singlePlayers = players[player]
+          
+          for (const key in singlePlayers) {
+
+             if (key === "number") {
+               result.push(singlePlayers[key]);
+             }
+          }
+        }
+      }
+    }
+  return result;
+}
+playerNumbers("Charlotte Hornets");
 
 
+function playerStats(playerName) {
+
+    const game = gameObject();
+    
+    for (const gameKey in game) {
+    
+       const players = game[gameKey].players
+        
+        for (const player in players) {
+
+          const singlePlayers = players[player]
+          
+          if (playerName === player) {
+
+           return singlePlayers
+          }
+        }
+    }
+}
+playerStats("Bismak Biyombo");
+
+
+function bigShoeRebounds() {
+    
+    let currentPlayer = {'shoe': 0}
+    
+    for (let key in players()) {
+
+      if (players()[key].shoe > currentPlayer.shoe) {
+
+        currentPlayer = players()[key]
+      }
+    }
+     return currentPlayer.rebounds
+  }
 debugger
